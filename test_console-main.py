@@ -1,15 +1,14 @@
 #!/usr/bin/python3
-import cmd
 import inspect
 import io
-import shutil
 import sys
+import cmd
+import shutil
 
 """
 Cleanup file storage
 """
 import os
-
 file_path = "file.json"
 if not os.path.exists(file_path):
     try:
@@ -109,8 +108,8 @@ if result is None or result == "":
 
 user_id = result
 
-place_name = "My_house"
-place_desc = "no_description_yet"
+place_name = "My house"
+place_desc = "no description yet"
 place_nb_rooms = 4
 place_nb_bath = 0
 place_max_guests = -3
@@ -128,47 +127,36 @@ if result is None or result == "":
     print("FAIL: empty output")
 
 if "[Place]" not in result or place_id not in result:
-    print("[Place]")
     print("FAIL: wrong output format: \"{}\"".format(result))
 
 if "city_id" not in result or city_id not in result:
-    print("city_id")
     print("FAIL: missing new information: \"{}\"".format(result))
 
 if "user_id" not in result or user_id not in result:
-    print("user_id")
     print("FAIL: missing new information: \"{}\"".format(result))
 
 if "name" not in result or place_name not in result:
-    print("name")
     print("FAIL: missing new information: \"{}\"".format(result))
 
 if "description" not in result or place_desc not in result:
-    print("description")
     print("FAIL: missing new information: \"{}\"".format(result))
 
 if "number_rooms" not in result or str(place_nb_rooms) not in result:
-    print("number_rooms")
     print("FAIL: missing new information: \"{}\"".format(result))
 
 if "number_bathrooms" not in result or str(place_nb_bath) not in result:
-    print("number_bathrooms")
     print("FAIL: missing new information: \"{}\"".format(result))
 
 if "max_guest" not in result or str(place_max_guests) not in result:
-    print("max_guest")
     print("FAIL: missing new information: \"{}\"".format(result))
 
 if "price_by_night" not in result or str(place_price) not in result:
-    print("price_by_night")
     print("FAIL: missing new information: \"{}\"".format(result))
 
 if "latitude" not in result or str(place_lat) not in result:
-    print("latitude")
     print("FAIL: missing new information: \"{}\"".format(result))
 
 if "longitude" not in result or str(place_lon) not in result:
-    print("longitude")
     print("FAIL: missing new information: \"{}\"".format(result))
 
 
