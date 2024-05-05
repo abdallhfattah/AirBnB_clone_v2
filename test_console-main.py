@@ -1,14 +1,15 @@
 #!/usr/bin/python3
+import cmd
 import inspect
 import io
-import sys
-import cmd
 import shutil
+import sys
 
 """
 Cleanup file storage
 """
 import os
+
 file_path = "file.json"
 if not os.path.exists(file_path):
     try:
