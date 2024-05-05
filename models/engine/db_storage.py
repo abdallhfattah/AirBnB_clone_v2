@@ -40,7 +40,7 @@ class DBStorage():
         getting Target Class query or default all
         """
         filter = []
-        classes = [City, State]  # , Review, Place, User, Amenity]
+        classes = [City, State , Place, User]  # , Review, Amenity]
         obj = []
         if (cls != None):
             filter = self.__session.query(cls)
