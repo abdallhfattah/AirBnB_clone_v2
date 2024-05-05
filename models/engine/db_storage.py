@@ -17,7 +17,7 @@ from models.user import User
 
 class DBStorage():
     """
-    DB
+    Data base Storage
     """
     __engine = None
     __session = None
@@ -40,13 +40,15 @@ class DBStorage():
         getting Target Class query or default all
         """
         filter = []
-        classes = [City, Place, Review, State, User, Amenity]
-
+        classes = [City,State] #, Review, Place, User, Amenity]
+        obj = []
         if (cls == None):
             filter = self.__session.query(cls)
         else:
-            for clss in classes:
-                filter.extend(self.__session.query(clss).all())
+            for cls in classes:
+                obj.extend(self.__session.query(cls).all())
+
+
         dic_db = {}
         for obj in filter:
             dic_db[(type(obj).__name__ + '.' + obj.id)] = obj
