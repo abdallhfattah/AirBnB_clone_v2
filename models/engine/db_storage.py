@@ -24,16 +24,15 @@ class DBStorage():
 
     def __init__(self):
         """
-        init
+        Initialize a new DBStorage instance.
         """
-        mysql_user = getenv("HBNB_MYSQL_USER")
-        mysql_passwd = getenv("HBNB_MYSQL_PWD")
-        mysql_host = getenv("HBNB_MYSQL_HOST")
-        mysql_database = getenv("HBNB_MYSQL_DB")
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}:3306/{}"
-                                      .format(mysql_user, mysql_passwd,
-                                              mysql_host, mysql_database), pool_pre_ping=True)
-        if (getenv("HBNB_ENV") == "test"):
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
+                                      format(getenv("HBNB_MYSQL_USER"),
+                                             getenv("HBNB_MYSQL_PWD"),
+                                             getenv("HBNB_MYSQL_HOST"),
+                                             getenv("HBNB_MYSQL_DB")),
+                                      pool_pre_ping=True)
+        if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -41,17 +40,16 @@ class DBStorage():
         getting Target Class query or default all
         """
         filter = []
-        classes = [City, Place, Review, State, User]
+        classes = [City, Place, Review, State, User, Amenity]
 
         if (cls == None):
-            filter = self.__session.query(cls).all()
+            filter = self.__session.query(cls)
         else:
             for clss in classes:
                 filter.extend(self.__session.query(clss).all())
-
         dic_db = {}
-        for query in filter:
-            dic_db[(type(query).__name__ + '.' + query.id)] = query
+        for obj in filter:
+            dic_db[(type(obj).__name__ + '.' + obj.id)] = obj
 
         return dic_db
 
@@ -71,7 +69,8 @@ class DBStorage():
     def reload(self):
         """reload the sesssion"""
         Base.metadata.create_all(self.__engine)
-        Session = scoped_session(sessionmaker(bind=self.__engine , expire_on_commit=False))
+        Session = scoped_session(sessionmaker(
+            bind=self.__engine, expire_on_commit=False))
         self.__session = Session()
 
     def close(self):
