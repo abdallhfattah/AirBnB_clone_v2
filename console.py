@@ -114,40 +114,34 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, line):
-        """Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
-        Create a new class instance with given keys/values and print its id.
-        """
-        try:
-            if not line:
-                raise SyntaxError()
-            my_list = line.split(" ")
+    def do_create(self, args):
+        """ Create an object of any class"""
 
-            kwargs = {}
-            for i in range(1, len(my_list)):
-                key, value = tuple(my_list[i].split("="))
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                kwargs[key] = value
-
-            if kwargs == {}:
-                obj = eval(my_list[0])()
-            else:
-                obj = eval(my_list[0])(**kwargs)
-                storage.new(obj)
-            print(obj.id)
-            obj.save()
-
-        except SyntaxError:
+        subStr = args.split()
+        if not args:
             print("** class name missing **")
-        except NameError:
+            return
+        elif subStr[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.classes[subStr[0]]()
 
+        if len(subStr) > 1:
+            for param in subStr[1:]:
+                paramDic = param.split('=')
+                paramDic[1] = paramDic[1].replace('_', ' ').replace('"', '')
+                try:
+                    if '.' in paramDic[1]:
+                        paramDic[1] = float(paramDic[1])
+                    else:
+                        if (paramDic[1][0] != '0'):
+                            paramDic[1] = int(paramDic[1])
+                except ValueError:
+                    pass
+                setattr(new_instance, paramDic[0], paramDic[1])
+        storage.new(new_instance)
+        storage.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
