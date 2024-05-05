@@ -40,14 +40,13 @@ class DBStorage():
         getting Target Class query or default all
         """
         filter = []
-        classes = [City,State] #, Review, Place, User, Amenity]
+        classes = [City, State]  # , Review, Place, User, Amenity]
         obj = []
-        if (cls == None):
+        if (cls != None):
             filter = self.__session.query(cls)
         else:
             for cls in classes:
                 obj.extend(self.__session.query(cls).all())
-
 
         dic_db = {}
         for obj in filter:
