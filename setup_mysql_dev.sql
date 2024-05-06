@@ -7,3 +7,4 @@ GRANT SELECT ON performance_schema . * TO 'hbnb_dev'@'localhost';
 -- mysql -u hbnb_dev -p
 -- hbnb_dev_pwd
 -- USE hbnb_dev_db;
+''

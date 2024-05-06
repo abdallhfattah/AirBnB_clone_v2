@@ -36,23 +36,25 @@ class DBStorage():
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
+        """Query on the curret database session all objects of the given class.
+
+        If cls is None, queries all types of objects.
+
+        Return:
+            Dict of queried classes in the format <class name>.<obj id> = obj.
         """
-        getting Target Class query or default all
-        """
-        filter = []
-        classes = [City, State , Place, User]  # , Review, Amenity]
-        obj = []
-        if (cls != None):
-            filter = self.__session.query(cls)
+        if cls is None:
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            # objs.extend(self.__session.query(Review).all())
+            # objs.extend(self.__session.query(Amenity).all())
         else:
-            for cls in classes:
-                obj.extend(self.__session.query(cls).all())
-
-        dic_db = {}
-        for obj in filter:
-            dic_db[(type(obj).__name__ + '.' + obj.id)] = obj
-
-        return dic_db
+            if type(cls) == str:
+                cls = eval(cls)
+            objs = self.__session.query(cls)
+        return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
 
     def new(self, obj):
         """addes a new to the current database session."""
@@ -68,10 +70,11 @@ class DBStorage():
             self.__session.delete(obj)
 
     def reload(self):
-        """reload the sesssion"""
+        """Create all tables in the database and initialize a new session."""
         Base.metadata.create_all(self.__engine)
-        Session = scoped_session(sessionmaker(
-            bind=self.__engine, expire_on_commit=False))
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
+        Session = scoped_session(session_factory)
         self.__session = Session()
 
     def close(self):

@@ -139,10 +139,12 @@ class HBNBCommand(cmd.Cmd):
                 except ValueError:
                     pass
                 setattr(new_instance, paramDic[0], paramDic[1])
+        print(new_instance)
         storage.new(new_instance)
         storage.save()
+        return
         print(new_instance.id)
-
+# echo 'create Place city_id="7ccd2bcb-b447-4b42-b290-678111c80207" user_id="30c2a559-48fe-4940-a166-026f36713e61" name="Lovely_place" number_rooms=3 number_bathrooms=1 max_guest=6 price_by_night=120 latitude=37.773972 longitude=-122.431297' | HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db ./console.py
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")

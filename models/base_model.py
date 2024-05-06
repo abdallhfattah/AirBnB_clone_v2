@@ -52,14 +52,14 @@ class BaseModel:
         models.storage.delete(self)
     
     def to_dict(self):
-        """Convert instance into dict format"""
-        dictionary =  self.__dict__.copy()
+        """Return a dictionary representation of the BaseModel instance.
 
-        if hasattr(self , "_sa_instance_state"):
-            delattr(self , "_sa_instance_state")
-
-        dictionary.update(self.__dict__)
-        dictionary["__class__"] = str(type(self).__name__)
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary
+        Includes the key/value pair __class__ representing
+        the class name of the object.
+        """
+        my_dict = self.__dict__.copy()
+        my_dict["__class__"] = str(type(self).__name__)
+        my_dict["created_at"] = self.created_at.isoformat()
+        my_dict["updated_at"] = self.updated_at.isoformat()
+        my_dict.pop("_sa_instance_state", None)
+        return my_dict
