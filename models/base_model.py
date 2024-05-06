@@ -50,7 +50,7 @@ class BaseModel:
     def delete(self):
         """Delete the current instance from storage."""
         models.storage.delete(self)
-    
+
     def to_dict(self):
         """Return a dictionary representation of the BaseModel instance.
 
