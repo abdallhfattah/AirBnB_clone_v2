@@ -13,3 +13,4 @@ class City(BaseModel, Base):
     # adding __tablename__.id as string form to avoid circular dependency
     state_id = Column(String(60), ForeignKey("states.id"), nullable=False)
     places = relationship("Place", backref="cities", cascade="delete")
+    reviews = relationship("Review", backref="user", cascade="delete")
